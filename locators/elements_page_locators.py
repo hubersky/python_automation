@@ -49,3 +49,6 @@ class WebTablesLocators:
     # table_person
     ADD_PERSON_LIST = (By.CSS_SELECTOR, "div[class='rt-tr-group']")
     ROW = ".//ancestor::div[@class='rt-tr-group']"
+    ALERT_NO_ROWS_FOUND = (By.CSS_SELECTOR, "div[class='rt-noData']")
+    SELECT_ROWS = (By.CSS_SELECTOR, "select[aria-label='rows per page']")
+

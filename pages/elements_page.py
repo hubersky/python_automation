@@ -141,46 +141,46 @@ class WebTablesPage(BasePage):
         age = person_info.age
         salary = person_info.salary
         department = person_info.department
+        list_info = [first_name, last_name, email, age, salary, department]
+        list_locators = [self.locators.FIRST_NAME, self.locators.LAST_NAME,
+                         self.locators.EMAIL, self.locators.AGE,
+                         self.locators.SALARY, self.locators.DEPARTMENT]
         choose_field = random.randint(0, 5)
-        if choose_field == 0:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.FIRST_NAME).clear()
-            self.element_is_visible(self.locators.FIRST_NAME) \
-                .send_keys(first_name)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return first_name
-        if choose_field == 1:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.LAST_NAME).clear()
-            self.element_is_visible(self.locators.LAST_NAME) \
-                .send_keys(last_name)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return last_name
-        if choose_field == 2:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.EMAIL).clear()
-            self.element_is_visible(self.locators.EMAIL) \
-                .send_keys(email)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return email
-        if choose_field == 3:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.AGE).clear()
-            self.element_is_visible(self.locators.AGE) \
-                .send_keys(age)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return str(age)
-        if choose_field == 4:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.SALARY).clear()
-            self.element_is_visible(self.locators.SALARY) \
-                .send_keys(salary)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return str(salary)
-        if choose_field == 5:
-            self.element_is_visible(self.locators.EDIT_BUTTON).click()
-            self.element_is_visible(self.locators.DEPARTMENT).clear()
-            self.element_is_visible(self.locators.DEPARTMENT) \
-                .send_keys(department)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-            return department
+        self.element_is_visible(self.locators.EDIT_BUTTON).click()
+        self.element_is_visible(list_locators[choose_field]).clear()
+        self.element_is_visible(list_locators[choose_field]) \
+            .send_keys(list_info[choose_field])
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return list_info[choose_field]
+
+    def delete_person(self):
+        self.element_is_present(self.locators.DELETE_BUTTON).click()
+
+    def check_delete_person(self):
+        return self.element_is_present(self.locators.ALERT_NO_ROWS_FOUND).text
+
+    def select_table_row(self):
+        self.remove_footer()
+        self.remove_fixed_ban()
+        count = [5, 10, 20, 25, 50, 100]
+        data = []
+        for i in count:
+            count_button = self.element_is_present(self.locators.SELECT_ROWS)
+            self.go_to_element(count_button)
+            count_button.click()
+            self.element_is_visible(
+                (By.CSS_SELECTOR, f'option[value="{i}"]')).click()
+            data.append(self.count_rows())
+        return data
+
+    def count_rows(self):
+        list_rows = self.elements_are_present(self.locators.ADD_PERSON_LIST)
+        return len(list_rows)
+
+    def remove_footer(self):
+        self.driver.execute_script(
+            "document.getElementsByTagName('footer')[0].remove();")
+
+    def remove_fixed_ban(self):
+        self.driver.execute_script(
+            "document.getElementById('fixedban').style.display = 'none'")

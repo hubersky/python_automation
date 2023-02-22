@@ -67,7 +67,7 @@ class TestWebTables:
         table_row = web_tables_page.check_search_person()
         assert key_word in table_row, "Person not found!"
 
-    def test_edit_person_info(self,driver):
+    def test_edit_person_info(self, driver):
         web_tables_page = WebTablesPage(driver, "https://demoqa.com/webtables")
         web_tables_page.open()
 
@@ -77,5 +77,20 @@ class TestWebTables:
         table_row = web_tables_page.check_search_person()
         assert edit_value in table_row
 
+    def test_delete_person(self, driver):
+        web_tables_page = WebTablesPage(driver, "https://demoqa.com/webtables")
+        web_tables_page.open()
 
+        email = web_tables_page.add_new_person()[3]
+        web_tables_page.search_some_person(email)
+        web_tables_page.delete_person()
+        text = web_tables_page.check_delete_person()
+        assert text == "No rows found"
 
+    def test_change_count_row(self, driver):
+        web_tables_page = WebTablesPage(driver, "https://demoqa.com/webtables")
+        web_tables_page.open()
+
+        count_rows = [5, 10, 20, 25, 50, 100]
+        result = web_tables_page.select_table_row()
+        assert result == count_rows
