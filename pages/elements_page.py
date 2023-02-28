@@ -177,10 +177,3 @@ class WebTablesPage(BasePage):
         list_rows = self.elements_are_present(self.locators.ADD_PERSON_LIST)
         return len(list_rows)
 
-    def remove_footer(self):
-        self.driver.execute_script(
-            "document.getElementsByTagName('footer')[0].remove();")
-
-    def remove_fixed_ban(self):
-        self.driver.execute_script(
-            "document.getElementById('fixedban').style.display = 'none'")
