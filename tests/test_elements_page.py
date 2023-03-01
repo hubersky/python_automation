@@ -99,9 +99,9 @@ class TestWebTables:
 class TestButtonsPage:
 
     def test_buttons_page(self, driver):
-        buttons_page = ButtonsPage(driver,"https://demoqa.com/buttons")
+        buttons_page = ButtonsPage(driver, "https://demoqa.com/buttons")
         buttons_page.open()
-        double =buttons_page.click_on_different_button('double')
+        double = buttons_page.click_on_different_button('double')
         right = buttons_page.click_on_different_button('right')
         click = buttons_page.click_on_different_button('click')
         assert 'You have done a double click' == double
