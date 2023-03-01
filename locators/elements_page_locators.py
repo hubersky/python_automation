@@ -52,3 +52,14 @@ class WebTablesLocators:
     ALERT_NO_ROWS_FOUND = (By.CSS_SELECTOR, "div[class='rt-noData']")
     SELECT_ROWS = (By.CSS_SELECTOR, "select[aria-label='rows per page']")
 
+
+class ButtonsPageLocators:
+    # buttons
+    DOUBLE_CLICK_BUTTON = (By.ID, "doubleClickBtn")
+    RIGHT_CLICK_BUTTON = (By.ID, "rightClickBtn")
+    CLICK_ME_BUTTON = (By.XPATH, '//button[text()="Click Me"]')
+
+    # alert_message
+    DOUBLE_CLICK_MESSAGE = (By.ID, "doubleClickMessage")
+    RIGHT_CLICK_MESSAGE = (By.ID, "rightClickMessage")
+    CLICK_ME_MESSAGE = (By.ID, "dynamicClickMessage")

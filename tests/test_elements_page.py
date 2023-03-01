@@ -94,3 +94,16 @@ class TestWebTables:
         count_rows = [5, 10, 20, 25, 50, 100]
         result = web_tables_page.select_table_row()
         assert result == count_rows
+
+
+class TestButtonsPage:
+
+    def test_buttons_page(self, driver):
+        buttons_page = ButtonsPage(driver,"https://demoqa.com/buttons")
+        buttons_page.open()
+        double =buttons_page.click_on_different_button('double')
+        right = buttons_page.click_on_different_button('right')
+        click = buttons_page.click_on_different_button('click')
+        assert 'You have done a double click' == double
+        assert 'You have done a right click' == right
+        assert 'You have done a dynamic click' == click
