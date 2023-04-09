@@ -1,4 +1,8 @@
 import random
+import time
+
+import requests
+from selenium.common import TimeoutException
 
 from generator.generator import generated_person
 from locators.elements_page_locators import *
@@ -184,14 +188,67 @@ class ButtonsPage(BasePage):
     def click_on_different_button(self, type_click):
         match type_click:
             case 'double':
-                self.action_double_click(self.element_is_visible(self.locators.DOUBLE_CLICK_BUTTON))
-                return self.check_click_button(self.locators.DOUBLE_CLICK_MESSAGE)
+                self.action_double_click(
+                    self.element_is_visible(self.locators.DOUBLE_CLICK_BUTTON))
+                return self.check_click_button(
+                    self.locators.DOUBLE_CLICK_MESSAGE)
             case 'right':
-                self.action_right_click(self.element_is_visible(self.locators.RIGHT_CLICK_BUTTON))
-                return self.check_click_button(self.locators.RIGHT_CLICK_MESSAGE)
+                self.action_right_click(
+                    self.element_is_visible(self.locators.RIGHT_CLICK_BUTTON))
+                return self.check_click_button(
+                    self.locators.RIGHT_CLICK_MESSAGE)
             case 'click':
                 self.element_is_visible(self.locators.CLICK_ME_BUTTON).click()
                 return self.check_click_button(self.locators.CLICK_ME_MESSAGE)
 
-    def check_click_button(self, element):
-        return self.element_is_present(element).text
+    def check_click_button(self, locator):
+        return self.element_is_present(locator).text
+
+
+class LinksPage(BasePage):
+    locators = LinksPageLocators()
+
+    def check_new_tab_link(self):
+        link = self.element_is_visible(self.locators.HOME_LINK)
+        link_href = link.get_attribute('href')
+        request = requests.get(link_href)
+        if request.status_code == 200:
+            link.click()
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            url = self.driver.current_url
+            return link_href, url
+        else:
+            return link_href, request.status_code
+
+    def check_broken_link(self, url):
+        request = requests.get(url)
+        if request.status_code == 200:
+            self.element_is_present(self.locators.BAD_REQUEST_LINK).click()
+        else:
+            return request.status_code
+
+
+class DynamicPropertiesPage(BasePage):
+    locators = DynamicPropertiesLocators()
+
+    def check_change_color(self):
+        color_button = self.element_is_present(
+            self.locators.COLOR_CHANGE_BUTTON)
+        color_before = color_button.value_of_css_property('color')
+        time.sleep(5)
+        color_after = color_button.value_of_css_property('color')
+        return color_before, color_after
+
+    def check_enable_button(self):
+        try:
+            self.element_is_clickable(self.locators.WILL_ENABLE_BUTTON)
+        except TimeoutException:
+            return False
+        return True
+
+    def check_visible_after_button(self):
+        try:
+            self.element_is_visible(self.locators.VISIBLE_AFTER_BUTTON)
+        except TimeoutException:
+            return False
+        return True

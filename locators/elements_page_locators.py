@@ -63,3 +63,18 @@ class ButtonsPageLocators:
     DOUBLE_CLICK_MESSAGE = (By.ID, "doubleClickMessage")
     RIGHT_CLICK_MESSAGE = (By.ID, "rightClickMessage")
     CLICK_ME_MESSAGE = (By.ID, "dynamicClickMessage")
+
+
+class LinksPageLocators:
+    # simple_links
+    HOME_LINK = (By.ID, 'simpleLink')
+
+    # bad_request_link
+    BAD_REQUEST_LINK = (By.CSS_SELECTOR, 'a[id="bad-request"]')
+
+
+class DynamicPropertiesLocators:
+
+    WILL_ENABLE_BUTTON = (By.CSS_SELECTOR, "button[id='enableAfter']")
+    VISIBLE_AFTER_BUTTON = (By.CSS_SELECTOR, "button[id='visibleAfter']")
+    COLOR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id='colorChange']")

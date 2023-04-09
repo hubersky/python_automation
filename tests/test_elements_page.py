@@ -1,5 +1,3 @@
-import time
-
 from pages.elements_page import *
 
 
@@ -107,3 +105,48 @@ class TestButtonsPage:
         assert 'You have done a double click' == double
         assert 'You have done a right click' == right
         assert 'You have done a dynamic click' == click
+
+
+class TestLinksPage:
+
+    def test_check_link(self, driver):
+        links_page = LinksPage(driver, "https://demoqa.com/links")
+        links_page.open()
+
+        href_link, url = links_page.check_new_tab_link()
+        assert href_link == url
+
+    def test_broken_link(self, driver):
+        links_page = LinksPage(driver, "https://demoqa.com/links")
+        links_page.open()
+
+        response_code = links_page.check_broken_link(
+            "https://demoqa.com/bad-request")
+        assert response_code == 400
+
+
+class TestDynamicProperties:
+
+    def test_change_color(self, driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver,
+                                                        "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+
+        color_before, color_after = dynamic_properties_page.check_change_color()
+        assert color_before != color_after
+
+    def test_will_enable_button(self, driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver,
+                                                        "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+        result = dynamic_properties_page.check_enable_button()
+
+        assert result is False
+
+    def test_visible_after_button(self, driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver,
+                                                        "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+        result = dynamic_properties_page.check_visible_after_button()
+
+        assert result is False
